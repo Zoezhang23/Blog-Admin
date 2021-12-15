@@ -16,7 +16,7 @@ import useLocale from '../../utils/useLocale';
 import Logo from '../../assets/logo.svg';
 import history from '../../history';
 
-import MessageBox from '../MessageBox';
+// import MessageBox from '../MessageBox';
 
 import styles from './style/index.module.less';
 
@@ -43,14 +43,14 @@ function Navbar() {
         <Space size={8}>
           <Logo />
           <Typography.Title style={{ margin: 0, fontSize: 18 }} heading={5}>
-            Arco Design Pro
+            Blog Admin System
           </Typography.Title>
         </Space>
       </div>
       <ul className={styles.right}>
-        <li>
+        {/* <li>
           <MessageBox />
-        </li>
+        </li> */}
         <li>
           <a>{locale['navbar.docs']}</a>
         </li>
@@ -59,6 +59,7 @@ function Navbar() {
             options={[
               { label: '中文', value: 'zh-CN' },
               { label: 'English', value: 'en-US' },
+              { label: 'Dutch', value: 'du-NL' },
             ]}
             value={localStorage.getItem('arco-lang')}
             bordered={false}

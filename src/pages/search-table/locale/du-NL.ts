@@ -1,0 +1,16 @@
+export default {
+    'menu.list.searchTable': 'Zoektabel',
+    'searchTable.addPolicy': 'beleid toevoegen',
+    'searchTable.placeholder.name': 'Voer de naam / ID van het beleid in',
+    'searchTable.columns.name': 'Beleidsnaam / beleids-ID',
+    'searchTable.columns.workflow': 'Werkstroomnaam / ID',
+    'searchTable.columns.period': 'Statistische periode',
+    'searchTable.columns.statistic': 'Statistieken',
+    'searchTable.columns.status': 'Toestand',
+    'searchTable.columns.createdTime': 'GemaaktTijd',
+    'searchTable.columns.deadline': 'Deadline',
+    'searchTable.columns.operations': 'Activiteiten',
+    'searchTable.columns.operations.view': 'Visie',
+    'searchTable.columns.operations.update': 'Bijwerken',
+    'searchTable.columns.operations.delete': 'Verwijderen',
+};
