@@ -30,10 +30,16 @@ function Navbar() {
     localStorage.setItem('userStatus', 'logout');
     history.push('/user/login');
   }
+  function publish() {
+    console.log('todo...');
+  }
 
   function onMenuItemClick(key) {
     if (key === 'logout') {
       logout();
+    }
+    if (key === 'publish') {
+      publish();
     }
   }
 
@@ -103,9 +109,14 @@ function Navbar() {
             <Dropdown
               trigger="click"
               droplist={
-                <Menu onClickMenuItem={onMenuItemClick}>
-                  <Menu.Item key="logout">登出</Menu.Item>
-                </Menu>
+                <>
+                  <Menu onClickMenuItem={onMenuItemClick}>
+                    <Menu.Item key="publish">Publish</Menu.Item>
+                  </Menu>
+                  <Menu onClickMenuItem={onMenuItemClick}>
+                    <Menu.Item key="logout">Logout</Menu.Item>
+                  </Menu>
+                </>
               }
             >
               <Typography.Text className={styles.username}>{userInfo.name}</Typography.Text>

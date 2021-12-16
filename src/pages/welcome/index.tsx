@@ -1,12 +1,20 @@
-import { Alert, Card, Link, Typography, Tag, Image } from '@arco-design/web-react';
-import { IconDoubleRight } from '@arco-design/web-react/icon';
+import { Alert, Carousel, Typography } from '@arco-design/web-react';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { ReducerState } from '../../redux';
 import useLocale from '../../utils/useLocale';
-import imgWorkplace from '../../assets/workplace.png';
-import CodeBlock from './code-block';
 import styles from './style/index.module.less';
+import w1 from '../../assets/welcome1.jpg';
+import w2 from '../../assets/welcome2.jpg';
+import w3 from '../../assets/welcome3.jpg';
+import w4 from '../../assets/welcome4.jpg';
+// import imgWorkplace from '../../assets/workplace.png';
+// import CodeBlock from './code-block';
+
+
+const imageSrc = [
+  w1, w2, w3, w4
+];
 
 export default function Welcome() {
   const locale = useLocale();
@@ -23,7 +31,28 @@ export default function Welcome() {
       </div>
       <div className={styles.content}>
         <Alert type="success" content={locale['welcome.invite']} />
-        <Card style={{ marginTop: 20 }} bordered={false} title={locale['welcome.usage']}>
+        <Carousel
+          style={{
+            width: '80%',
+            height: '60%',
+            position: 'fixed'
+          }}
+          autoPlay={true}
+          indicatorType='dot'
+          showArrow='hover'
+        >
+          {imageSrc.map((src, index) => (
+            <div key={index}>
+              <img
+                src={src}
+                style={{
+                  width: '100%',
+                }}
+              />
+            </div>
+          ))}
+        </Carousel>
+        {/* <Card style={{ marginTop: 20 }} bordered={false} title={locale['welcome.usage']}>
           <Typography.Title heading={6} style={{ marginTop: 0 }}>
             1. {locale['welcome.step.title.pickup']}
           </Typography.Title>
@@ -56,7 +85,7 @@ export default function Welcome() {
               {locale['welcome.link.material-all']} <IconDoubleRight />
             </Link>
           </div>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

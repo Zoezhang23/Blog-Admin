@@ -2,7 +2,7 @@ export default {
   'menu.welcome': 'Welcome',
   'welcome.title.welcome': 'Welcome',
   'welcome.invite':
-    'Arco Cli commands can be used to install materials from the material market, and we sincerely invite you to experience it.',
+    'This is a admin management system for zhijuan-blog, where new articles can be published.',
   'welcome.usage': 'Usage',
   'welcome.step.title.pickup': 'Select materials from the material market',
   'welcome.step.title.install': 'Install',

@@ -29,6 +29,14 @@ export interface GlobalState {
 const initialState: GlobalState = {
   theme: defaultTheme,
   settings: defaultSettings,
+  userInfo: {
+    name: 'Zoë',
+    avatar: 'http://zhijuan-blog.herokuapp.com/static/media/me.cc8b5a93.jpg',
+    job: 'Frontend Developer',
+    organization: '',
+    location: 'Eindhoven, NL',
+    email: 'zhangzhijuan23@gmail.com',
+  }
 };
 
 export default function (state = initialState, action) {

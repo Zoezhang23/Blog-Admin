@@ -1,7 +1,7 @@
 export default {
   'menu.welcome': '欢迎页',
   'welcome.title.welcome': '欢迎',
-  'welcome.invite': '通过 Arco Cli 命令可以安装物料市场的物料，诚邀您体验。',
+  'welcome.invite': '这是志娟博客的管理系统，可以发表新文章.',
   'welcome.usage': '使用方式',
   'welcome.step.title.pickup': '从物料市场选择物料',
   'welcome.step.title.install': '安装物料',
