@@ -20,7 +20,7 @@ import checkLogin from './utils/checkLogin';
 const store = createStore(rootReducer);
 
 function Index() {
-  const localeName = localStorage.getItem('arco-lang') || 'zh-CN';
+  const localeName = localStorage.getItem('arco-lang') || 'en-US';
 
   if (!localStorage.getItem('arco-lang')) {
     localStorage.setItem('arco-lang', localeName);

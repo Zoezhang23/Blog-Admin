@@ -6,6 +6,7 @@ import localeWelcome from '../pages/welcome/locale/zh-CN';
 export default {
   'menu.list': '列表页',
   'navbar.docs': '文档中心',
+  'menu.category': '分类',
   ...localeSettings,
   ...localeMessageBox,
   ...localeSearchTable,

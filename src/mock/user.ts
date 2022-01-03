@@ -24,28 +24,40 @@ setupMock({
     });
 
     // 登录
-    Mock.mock(new RegExp('/api/user/login'), (params) => {
+    Mock.mock(new RegExp('/api/v1/user/login'), (params) => {
       const { userName, password } = JSON.parse(params.body);
       if (!userName) {
         return {
+          code: 404,
+          data: null,
           status: 'error',
-          msg: '用户名不能为空',
+          msg: 'Username can not be empty',
         };
       }
       if (!password) {
         return {
+          code: 404,
+          data: null,
           status: 'error',
-          msg: '密码不能为空',
+          msg: 'Password can not be empty',
         };
       }
-      if (userName === 'admin' && password === 'admin') {
+      if (userName === 'admin' && password === '123456') {
         return {
+          code: 500,
+          data: {
+            token: 'fake',
+            userName: 'admin',
+          },
           status: 'ok',
+          msg: 'Login Sucessfully'
         };
       }
       return {
+        code: 0,
+        data: null,
         status: 'error',
-        msg: '账号或者密码错误',
+        msg: 'Incorerect username or password!',
       };
     });
   },

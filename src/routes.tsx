@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconList, IconGift } from '@arco-design/web-react/icon';
+import { IconList, IconGift, IconSelectAll } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
 
@@ -21,5 +21,11 @@ export const routes = [
         componentPath: 'search-table',
       },
     ],
+  },
+  {
+    name: 'menu.category',
+    key: 'category',
+    icon: <IconSelectAll />,
+    componentPath: 'category',
   },
 ];

@@ -13,7 +13,6 @@ import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReducerState } from '../../redux';
 import useLocale from '../../utils/useLocale';
-import Logo from '../../assets/logo.svg';
 import history from '../../history';
 
 // import MessageBox from '../MessageBox';
@@ -27,7 +26,7 @@ function Navbar() {
   const dispatch = useDispatch();
 
   function logout() {
-    localStorage.setItem('userStatus', 'logout');
+    localStorage.removeItem('token');
     history.push('/user/login');
   }
   function publish() {
@@ -47,7 +46,6 @@ function Navbar() {
     <div className={styles.navbar}>
       <div className={styles.left}>
         <Space size={8}>
-          <Logo />
           <Typography.Title style={{ margin: 0, fontSize: 18 }} heading={5}>
             Blog Admin System
           </Typography.Title>

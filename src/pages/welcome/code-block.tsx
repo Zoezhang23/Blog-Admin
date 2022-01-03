@@ -13,14 +13,14 @@ export default function CodeBlock(props: CodeBlockProps) {
   return (
     <pre className={styles['code-block']}>
       <code className={styles['code-block-content']}>{code}</code>
-      <Tooltip content="点击复制命令">
+      <Tooltip content="click to copy">
         <Button
           type="text"
           className={styles['code-block-copy-btn']}
           icon={<IconCopy />}
           onClick={() => {
             clipboard(code);
-            Message.success('复制成功');
+            Message.success('coped');
           }}
         />
       </Tooltip>
