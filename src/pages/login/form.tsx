@@ -5,12 +5,14 @@ import React, { useRef, useState } from 'react';
 import styles from './style/index.module.less';
 import history from '../../history';
 import { adminLogin } from '../../api/login';
+import { useDispatch } from 'react-redux';
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);
+  const dispatch = useDispatch();
 
   function afterLoginSuccess(params) {
     // // 记住密码
@@ -21,6 +23,8 @@ export default function LoginForm() {
     // }
     // 记录登录状态
     localStorage.setItem('token', params.token);
+    //register userInfo in redux
+    dispatch({ type: 'LOGIN', payload: params })
     // 跳转首页
     window.location.href = history.createHref({
       pathname: '/',
@@ -32,7 +36,7 @@ export default function LoginForm() {
     setLoading(true);
     try {
       const res: any = await adminLogin(params);
-      console.log(res);
+      // console.log(res);
       if (res.data) {
         afterLoginSuccess(res.data);
       } else {

@@ -30,7 +30,7 @@ const initialState: GlobalState = {
   theme: defaultTheme,
   settings: defaultSettings,
   userInfo: {
-    name: 'Zoë',
+    name: localStorage.getItem('userName') || 'Zoë',
     avatar: 'http://zhijuan-blog.herokuapp.com/static/media/me.cc8b5a93.jpg',
     job: 'Frontend Developer',
     organization: '',
@@ -41,6 +41,16 @@ const initialState: GlobalState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    //login redux
+    case 'LOGIN': {
+      const { userName } = action.payload;
+      localStorage.setItem('userName', userName);
+      console.log(state);
+      return {
+        ...state,
+        userInfo: { ...state.userInfo, name: userName }
+      }
+    }
     case 'toggle-theme': {
       const { theme } = action.payload;
       if (theme === 'light' || theme === 'dark') {
