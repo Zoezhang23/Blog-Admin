@@ -109,14 +109,14 @@ function Navbar() {
             <Dropdown
               trigger="click"
               droplist={
-                <>
+                <div>
                   <Menu onClickMenuItem={onMenuItemClick}>
                     <Menu.Item key="publish">Publish</Menu.Item>
                   </Menu>
                   <Menu onClickMenuItem={onMenuItemClick}>
                     <Menu.Item key="logout">Logout</Menu.Item>
                   </Menu>
-                </>
+                </div>
               }
             >
               <Typography.Text className={styles.username}>{userInfo.name}</Typography.Text>
