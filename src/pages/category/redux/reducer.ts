@@ -1,5 +1,5 @@
 import { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
-import { UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, UPDATE_FORM_PARAMS } from './actionTypes';
+import { UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, UPDATE_FORM_PARAMS, ADD_CATEGORY_NAME } from './actionTypes';
 
 const initialState = {
   data: [],
@@ -56,7 +56,15 @@ export default function (state = initialState, action) {
         formParams: params,
       };
     }
+    case ADD_CATEGORY_NAME: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        data,
+      };
+    }
     default:
       return state;
   }
+
 }

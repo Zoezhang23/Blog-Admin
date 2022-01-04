@@ -1,23 +1,12 @@
 import React, { useEffect } from 'react';
-import {
-    Table,
-    Button,
-    Input,
-    Breadcrumb,
-    Card,
-} from '@arco-design/web-react';
+import { Modal, Form, Message, Table, Button, Input, Breadcrumb, Card, } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    UPDATE_FORM_PARAMS,
-    UPDATE_LIST,
-    UPDATE_LOADING,
-    UPDATE_PAGINATION,
-} from './redux/actionTypes';
+import { UPDATE_FORM_PARAMS, UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, ADD_CATEGORY_NAME } from './redux/actionTypes';
 import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
-import { category } from '../../api/category';
-
+import { categoryList, addCategory } from '../../api/category';
+import { useState } from 'react';
 function CategoryTable() {
     const locale = useLocale();
 
@@ -64,6 +53,10 @@ function CategoryTable() {
     useEffect(() => {
         fetchData();
     }, []);
+    const [visible, setVisible] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [form] = Form.useForm();
+    const FormItem = Form.Item;
 
     async function fetchData(current = 1, pageSize = 10, params = {}) {
         dispatch({ type: UPDATE_LOADING, payload: { loading: true } });
@@ -74,9 +67,7 @@ function CategoryTable() {
                 ...params,
             }
 
-
-            const res: any = await category(postData);
-            console.log(res);
+            const res: any = await categoryList(postData);
             if (res) {
                 dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
                 dispatch({
@@ -90,23 +81,6 @@ function CategoryTable() {
         } catch (error) {
 
         }
-        // axios
-        //     .get(`/api/v1/category`, {
-        //         params: {
-        //             page: current,
-        //             pageSize,
-        //             ...params,
-        //         },
-        //     })
-        //     .then((res) => {
-        //         dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
-        //         dispatch({
-        //             type: UPDATE_PAGINATION,
-        //             payload: { pagination: { ...pagination, current, pageSize, total: res.data.total } },
-        //         });
-        //         dispatch({ type: UPDATE_LOADING, payload: { loading: false } });
-        //         dispatch({ type: UPDATE_FORM_PARAMS, payload: { params } });
-        //     });
     }
 
     function onChangeTable(pagination) {
@@ -118,13 +92,33 @@ function CategoryTable() {
         fetchData(1, pagination.pageSize, { keyword });
     }
 
-    // function onDateChange(date) {
-    //     const [start, end] = date;
-    //     fetchData(1, pagination.pageSize, {
-    //         createdTimeStart: start,
-    //         createdTimeEnd: end,
-    //     });
-    // }
+
+    async function onOk() {
+        const res = await form.validate();
+        try {
+            setConfirmLoading(true);
+            const resp: any = await addCategory(res);
+            if (resp.code === 200) {
+                dispatch({ type: ADD_CATEGORY_NAME, payload: { data: resp.data.list } });
+                Message.success(resp.msg);
+                setVisible(false);
+                setConfirmLoading(false);
+                form.resetFields();
+
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const formItemLayout = {
+        labelCol: {
+            span: 4,
+        },
+        wrapperCol: {
+            span: 20,
+        },
+    };
 
     return (
         <div className={styles.container}>
@@ -136,14 +130,32 @@ function CategoryTable() {
                 <div className={styles.toolbar}>
                     <div>
                         {/* <Button type="primary">{locale['searchTable.addPolicy']}</Button> */}
-                        <Button type="primary">Add Category</Button>
+                        <Button type="primary" onClick={() => setVisible(true)}>Add Category</Button>
+                        {/*  modal part */}
+                        <Modal
+                            title='Add Category Name'
+                            visible={visible}
+                            onOk={onOk}
+                            confirmLoading={confirmLoading}
+                            onCancel={() => { form.resetFields(); }}
+                        >
+                            <Form
+                                {...formItemLayout}
+                                form={form}
+                                labelCol={{ style: { flexBasis: 80 } }}
+                                wrapperCol={{ style: { flexBasis: 'calc(100% - 80px)' } }}
+                            >
+                                <FormItem label='Name' field='name' rules={[{ required: true }]}>
+                                    <Input placeholder='Please input the category name' />
+                                </FormItem>
+                            </Form>
+                        </Modal>
                     </div>
                     <div>
-                        {/* <DatePicker.RangePicker style={{ marginRight: 8 }} onChange={onDateChange} /> */}
+
                         <Input.Search
                             style={{ width: 300 }}
                             searchButton
-                            // placeholder={locale['searchTable.placeholder.name']}
                             placeholder='Please input the category name'
                             onSearch={onSearch}
                         />
