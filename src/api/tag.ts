@@ -1,28 +1,28 @@
 import { request } from "./request";
 
-export async function categoryList(params) {
+export async function tagList(params) {
     return request({
-        url: '/categories',
+        url: '/tags',
         params,
     });
 }
-export async function addCategory(data) {
+export async function addTag(data) {
     return request({
-        url: '/categories',
+        url: '/tags',
         data,
         method: 'POST',
     });
 }
-export async function updateCategory(data) {
+export async function updateTag(data) {
     return request({
-        url: '/categories',
+        url: '/tags',
         data,
         method: 'PUT',
     });
 }
-export async function deleteCategory(data) {
+export async function deleteTag(data) {
     return request({
-        url: '/categories',
+        url: '/tags',
         data,
         method: 'DELETE',
     });

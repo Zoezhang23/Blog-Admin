@@ -23,7 +23,7 @@ const dateTime = date + ' ' + time;
 
 setupMock({
   setup() {
-    Mock.mock(new RegExp('/api/v1/categories'), (params) => {
+    Mock.mock(new RegExp('/api/v1/tags'), (params) => {
       switch (params.type) {
         case 'POST': {
           const { name } = JSON.parse(params.body);

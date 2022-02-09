@@ -5,7 +5,18 @@ export const request = (config) => {
         baseURL: '/api/v1',
     })
     //request block
-    http.interceptors.request.use((config) => { return config }, (error) => {
+    http.interceptors.request.use((config) => {
+        if (config.method === 'put' || 'delete') {
+            if (config.data) {
+                const data = config.data ? config.data : null
+                if (data) {
+                    config.url += '/' + data.id || data._id
+                }
+
+            }
+        }
+        return config
+    }, (error) => {
         console.log(error)
     })
     // response blcok

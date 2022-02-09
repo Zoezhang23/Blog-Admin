@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Message, Table, Button, Input, Breadcrumb, Card, Popconfirm } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { UPDATE_FORM_PARAMS, UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, ADD_CATEGORY_NAME, } from './redux/actionTypes';
+import { UPDATE_FORM_PARAMS, UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, ADD_TAG_NAME, } from './redux/actionTypes';
 import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
-import { categoryList, addCategory, updateCategory, deleteCategory } from '../../api/category';
+import { tagList, addTag, updateTag, deleteTag } from '../../api/tag';
 import { useState } from 'react';
 import { EditableCell, EditableRow } from './editeItem';
+
 function CategoryTable() {
     const locale = useLocale();
 
@@ -78,7 +79,7 @@ function CategoryTable() {
                 pageSize,
                 ...params,
             }
-            const res: any = await categoryList(postData);
+            const res: any = await tagList(postData);
 
             if (res) {
                 dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
@@ -91,6 +92,7 @@ function CategoryTable() {
             }
 
         } catch (error) {
+            console.log('94', error);
 
         }
     }
@@ -105,7 +107,7 @@ function CategoryTable() {
     }
     async function removeRow(key) {
         try {
-            const res: any = await deleteCategory(key);
+            const res: any = await deleteTag(key);
             if (res.code === 200) {
                 Message.info({ content: 'ok' });
                 fetchData();
@@ -118,9 +120,9 @@ function CategoryTable() {
         const res = await form.validate();
         try {
             setConfirmLoading(true);
-            const resp: any = await addCategory(res);
+            const resp: any = await addTag(res);
             if (resp.code === 200) {
-                dispatch({ type: ADD_CATEGORY_NAME, payload: { data: resp.data.list } });
+                dispatch({ type: ADD_TAG_NAME, payload: { data: resp.data.list } });
                 Message.success(resp.msg);
                 setVisible(false);
                 setConfirmLoading(false);
@@ -144,7 +146,7 @@ function CategoryTable() {
     //send the redux to manage the state
     const onHandleSave = async (rowData) => {
         try {
-            const res: any = await updateCategory(rowData);
+            const res: any = await updateTag(rowData);
             if (res.code === 200) {
                 Message.success(res.msg);
                 fetchData();
@@ -159,16 +161,16 @@ function CategoryTable() {
         <div className={styles.container}>
             <Breadcrumb style={{ marginBottom: 20 }}>
                 {/* <Breadcrumb.Item>{locale['menu.list']}</Breadcrumb.Item> */}
-                <Breadcrumb.Item>Category</Breadcrumb.Item>
+                <Breadcrumb.Item>Tag</Breadcrumb.Item>
             </Breadcrumb>
             <Card bordered={false}>
                 <div className={styles.toolbar}>
                     <div>
                         {/* <Button type="primary">{locale['searchTable.addPolicy']}</Button> */}
-                        <Button type="primary" onClick={() => setVisible(true)}>Add Category</Button>
+                        <Button type="primary" onClick={() => setVisible(true)}>Add Tag</Button>
                         {/*  modal part */}
                         <Modal
-                            title='Add Category Name'
+                            title='Add Tag Name'
                             visible={visible}
                             onOk={onOk}
                             confirmLoading={confirmLoading}
@@ -181,7 +183,7 @@ function CategoryTable() {
                                 wrapperCol={{ style: { flexBasis: 'calc(100% - 80px)' } }}
                             >
                                 <FormItem label='Name' field='name' rules={[{ required: true }]}>
-                                    <Input placeholder='Please input the category name' />
+                                    <Input placeholder='Please input the Tag name' />
                                 </FormItem>
                             </Form>
                         </Modal>
