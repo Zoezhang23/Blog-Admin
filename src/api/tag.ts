@@ -27,3 +27,10 @@ export async function deleteTag(data) {
         method: 'DELETE',
     });
 }
+export async function updateTagStatus(data) {
+    return request({
+        url: '/tags/status',
+        data,
+        method: 'PUT',
+    });
+}

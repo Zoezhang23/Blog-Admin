@@ -18,7 +18,7 @@ interface FormParams {
   [key: string]: string;
 }
 
-export interface CategoryTableState {
+export interface TagTableState {
   data?: any[];
   pagination?: PaginationProps;
   formParams?: FormParams;

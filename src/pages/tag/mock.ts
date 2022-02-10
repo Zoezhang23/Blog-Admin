@@ -10,6 +10,7 @@ let data = Mock.mock({
       'id|8': /[A-Z][a-z][-][0-9]/,
       'name|4-8': /[A-Z]/,
       'articleNumber': 0,
+      status: true,
       createdTime: Random.datetime(),
       updatedTime: Random.datetime(),
     },
@@ -23,6 +24,32 @@ const dateTime = date + ' ' + time;
 
 setupMock({
   setup() {
+    Mock.mock(new RegExp('/api/v1/tags/status'), (params) => {
+      switch (params.type) {
+        case 'PUT': {
+          const { id, checked } = JSON.parse(params.body);
+          data.list.map((item) => {
+            if (item.id === id) {
+              item.status = checked
+            }
+          })
+          return {
+            code: 200,
+            msg: 'Update Successful!',
+            data: null
+          }
+        }
+        default:
+          const { page = 1, pageSize = 10 } = qs.parseUrl(params.url).query;
+          const p = page as number;
+          const ps = pageSize as number;
+          return {
+            list: data.list.slice((p - 1) * ps, p * ps),
+            total: 55,
+          };
+      }
+
+    });
     Mock.mock(new RegExp('/api/v1/tags'), (params) => {
       switch (params.type) {
         case 'POST': {
@@ -31,6 +58,7 @@ setupMock({
             'id|8': /[A-Z][a-z][-][0-9]/,
             name,
             'articleNumber': 0,
+            status: true,
             createdTime: dateTime,
             updatedTime: Random.datetime(),
 

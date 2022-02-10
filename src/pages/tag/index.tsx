@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Message, Table, Button, Input, Breadcrumb, Card, Popconfirm } from '@arco-design/web-react';
+import { Modal, Form, Message, Switch, Table, Button, Input, Breadcrumb, Card, Popconfirm } from '@arco-design/web-react';
+import { IconCheck, IconClose } from '@arco-design/web-react/icon';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { UPDATE_FORM_PARAMS, UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, ADD_TAG_NAME, } from './redux/actionTypes';
 import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
-import { tagList, addTag, updateTag, deleteTag } from '../../api/tag';
+import { tagList, addTag, updateTag, deleteTag, updateTagStatus } from '../../api/tag';
 import { useState } from 'react';
 import { EditableCell, EditableRow } from './editeItem';
 
@@ -16,12 +18,20 @@ function CategoryTable() {
         {
             title: 'Name',
             dataIndex: 'name',
-            editable: true
+            editable: true,
+
         },
         {
             title: 'ArticleNumber',
             dataIndex: 'articleNumber',
 
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            render: (_, record: any) => (
+                <Switch checkedIcon={<IconCheck />} uncheckedIcon={<IconClose />} checked={record.status} onChange={(checked) => { updateStatus(checked, record.id) }} />
+            )
         },
         {
             title: 'CreatedTime',
@@ -39,7 +49,7 @@ function CategoryTable() {
                     {/* <Button type="text" size="small">
                         {locale['searchTable.columns.operations.update']}
                     </Button> */}
-                    <Popconfirm
+                    <Popconfirm disabled={record.status}
                         title='Are you sure you want to delete?'
                         onOk={() => {
                             removeRow(record);
@@ -48,7 +58,7 @@ function CategoryTable() {
                             Message.error({ content: 'cancel' });
                         }}
                     >
-                        <Button type="text" status="danger" size="small"> {locale['searchTable.columns.operations.delete']}</Button>
+                        <Button type="text" status="danger" size="small" disabled={record.status}> {locale['searchTable.columns.operations.delete']}</Button>
                     </Popconfirm>
 
                 </div>
@@ -56,9 +66,9 @@ function CategoryTable() {
         },
     ];
 
-    const categoryTableState = useSelector((state: ReducerState) => state.categoryTable);
+    const tagTableState = useSelector((state: ReducerState) => state.tagTable);
 
-    const { data, pagination, loading, formParams } = categoryTableState;
+    const { data, pagination, loading, formParams } = tagTableState;
 
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
@@ -80,7 +90,6 @@ function CategoryTable() {
                 ...params,
             }
             const res: any = await tagList(postData);
-
             if (res) {
                 dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
                 dispatch({
@@ -143,10 +152,26 @@ function CategoryTable() {
         },
     };
     //send axios requst to update the data
-    //send the redux to manage the state
     const onHandleSave = async (rowData) => {
+        console.log('155', rowData);
+        if (rowData.status === true) {
+            Message.warning('Sorry,you can not change it ! ');
+        } else {
+            try {
+                const res: any = await updateTag(rowData);
+                if (res.code === 200) {
+                    Message.success(res.msg);
+                    fetchData();
+                }
+            } catch (error) {
+                Message.error(error);
+            }
+        }
+
+    }
+    const updateStatus = async (checked: boolean, id: string) => {
         try {
-            const res: any = await updateTag(rowData);
+            const res: any = await updateTagStatus({ id, checked });
             if (res.code === 200) {
                 Message.success(res.msg);
                 fetchData();
@@ -154,7 +179,6 @@ function CategoryTable() {
         } catch (error) {
             Message.error(error);
         }
-
     }
 
     return (
@@ -193,7 +217,7 @@ function CategoryTable() {
                         <Input.Search
                             style={{ width: 300 }}
                             searchButton
-                            placeholder='Please input the category name'
+                            placeholder='Please input the tag name'
                             onSearch={onSearch}
                         />
                     </div>
@@ -210,14 +234,17 @@ function CategoryTable() {
                         },
                     }}
                     columns={columns.map((column) =>
+
                         column.editable
                             ? {
                                 ...column,
                                 onCell: () => ({
-                                    onHandleSave,
+                                    onHandleSave
+
                                 }),
                             }
                             : column
+
                     )}
                     className={styles['table-demo-editable-cell']}
                     data={data}
