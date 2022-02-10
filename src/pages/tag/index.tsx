@@ -153,7 +153,6 @@ function CategoryTable() {
     };
     //send axios requst to update the data
     const onHandleSave = async (rowData) => {
-        console.log('155', rowData);
         if (rowData.status === true) {
             Message.warning('Sorry,you can not change it ! ');
         } else {
@@ -185,7 +184,7 @@ function CategoryTable() {
         <div className={styles.container}>
             <Breadcrumb style={{ marginBottom: 20 }}>
                 {/* <Breadcrumb.Item>{locale['menu.list']}</Breadcrumb.Item> */}
-                <Breadcrumb.Item>Tag</Breadcrumb.Item>
+                <Breadcrumb.Item>Tag Page Managment</Breadcrumb.Item>
             </Breadcrumb>
             <Card bordered={false}>
                 <div className={styles.toolbar}>

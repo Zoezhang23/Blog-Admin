@@ -159,7 +159,7 @@ function CategoryTable() {
         <div className={styles.container}>
             <Breadcrumb style={{ marginBottom: 20 }}>
                 {/* <Breadcrumb.Item>{locale['menu.list']}</Breadcrumb.Item> */}
-                <Breadcrumb.Item>Category</Breadcrumb.Item>
+                <Breadcrumb.Item>Category Management</Breadcrumb.Item>
             </Breadcrumb>
             <Card bordered={false}>
                 <div className={styles.toolbar}>

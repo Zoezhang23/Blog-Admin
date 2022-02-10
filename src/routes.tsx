@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconList, IconGift, IconSelectAll, IconTag } from '@arco-design/web-react/icon';
+import { IconList, IconGift, IconSelectAll, IconTag, IconUser } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
 
@@ -33,5 +33,11 @@ export const routes = [
     key: 'tag',
     icon: < IconTag />,
     componentPath: 'tag',
+  },
+  {
+    name: 'About',
+    key: 'about',
+    icon: <IconUser />,
+    componentPath: 'about',
   },
 ];
