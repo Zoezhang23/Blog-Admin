@@ -1,3 +1,13 @@
 .container {
   padding: 20px;
 }
+.container .grid-gutter-demo .arco-col {
+  height: 48px;
+  color: var(--color-white);
+}
+.container .grid-gutter-demo .arco-col > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

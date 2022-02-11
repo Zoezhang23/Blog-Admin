@@ -3,6 +3,7 @@ import { Grid, Breadcrumb, Card, Form, Input } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import { TagEdite } from './tagEdite'
 import BottomFloat from '../../components/BottomFloat/index'
+import { ImgUpload } from '../../components/ImgUpload/index'
 
 export default function aboutPage() {
 
@@ -15,7 +16,18 @@ export default function aboutPage() {
         setTimeout(() => {
             form.setFieldsValue({
                 'tags': ['React', 'HTML', 'CSS', 'JS', 'TS'],
-                'describe': 'hello zoe!'
+                'describe': 'hello zoe!',
+                'imgs': [
+                    {
+                        _id: '',
+                        link: '',
+                        url: 'https://www.planetware.com/photos-large/F/france-things-to-do-eiffel-tower-sunset.jpg',
+                        icon: '',
+                        showAddBtn: true,
+                        showDelBtn: false,
+                    }
+                ],
+
 
             })
         }, 1000)
@@ -32,59 +44,68 @@ export default function aboutPage() {
     const onRefresh = () => {
         //todo....
     }
+    const onChange = (data) => {
+
+    }
     return (
         <div className={styles.container}>
             <Breadcrumb style={{ marginBottom: 20 }}>
                 {/* <Breadcrumb.Item>{locale['menu.list']}</Breadcrumb.Item> */}
                 <Breadcrumb.Item>About Page Management</Breadcrumb.Item>
             </Breadcrumb>
-            <Row className='grid-gutter-demo' gutter={24}>
-                <Col span={12}>
-                    <div>
-                        <Form
-                            layout='vertical'
-                            form={form}
-                            style={{ width: 600 }}
-                        >
-                            <Card className='card-custom-hover-style' hoverable>
-                                <Form.Item
-                                    field='tags'
-                                    labelAlign='left'
-                                    label='TagClouds(1-20):'
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please enter tag',
-                                        },
-                                    ]} >
-                                    <TagEdite maxTags={20} />
-                                </Form.Item>
-                                <Form.Item
-                                    field='describe'
-                                    label='Introduction'
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please say somthing about yourself',
-                                        },
-                                    ]} >
-                                    <TextArea
-                                        maxLength={{ length: 800, errorOnly: true }}
-                                        showWordLimit
-                                        placeholder='Please enter no more than 800 letters'
-                                        style={{ minHeight: 64 }}
-                                    />
+            <Form layout='vertical' form={form}>
+                <Row className='grid-gutter-demo' gutter={24} style={{ width: '100%' }}>
+                    <Col span={12}>
+                        <Card className='card-custom-hover-style' hoverable>
+                            <Form.Item
+                                field='tags'
+                                labelAlign='left'
+                                label='TagClouds(1-20):'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please enter tag',
+                                    },
+                                ]} >
+                                <TagEdite maxTags={20} />
+                            </Form.Item>
+                            <Form.Item
+                                field='describe'
+                                label='Introduction'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please say somthing about yourself',
+                                    },
+                                ]} >
+                                <TextArea
+                                    maxLength={{ length: 800, errorOnly: true }}
+                                    showWordLimit
+                                    placeholder='Please enter no more than 800 letters'
+                                    style={{ minHeight: 64 }}
+                                />
+                            </Form.Item>
+                        </Card>
 
-                                </Form.Item>
-                            </Card>
-                            {/* <Button onClick={sumbit} type='primary'>Get all tags</Button> */}
-                        </Form>
-                    </div>
-                </Col>
-                <Col span={12}>
-                    <div> </div>
-                </Col>
-            </Row>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            field='imgs'
+                            labelAlign='left'
+                            label='Upload image'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please select a image',
+                                },
+                            ]} >
+                            {/* onChang as top parent have this function by default and will pass to child*/}
+                            {/* Form.item have the value props by default. could sent to child */}
+                            <ImgUpload value maxImgs={3} onChange={onChange} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
             <BottomFloat saveTime={Date.now()} refresh={onRefresh} onSave={sumbit}></BottomFloat>
         </div>
 
