@@ -3,12 +3,12 @@ import { IconPlus, IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { Upload, Progress, Modal, Button, Form, Input, Message } from '@arco-design/web-react';
 
 export const ImageItem = (props) => {
-    const { url, link, index = 0, icon, onChange, addOne, deleteOne, showAddBtn, showDelBtn } = props
+    const { url, link, index = 0, icon, onChange, addOne, deleteOne, showAddBtn, showDelBtn, showUpload, showLink, showIcon, showOperation } = props
 
     //form part
     const [file, setFile] = useState<any>({
         url: url
-    })
+    } || null)
     const cs = `arco-upload-list-item${file && file.status === 'error' ? ' is-error' : ''}`;
 
     //modal part
@@ -18,8 +18,13 @@ export const ImageItem = (props) => {
 
 
     useEffect(() => {
-        setFile({ url: url })
-        form.setFieldValue('url', file.url)
+        if (url !== null || url !== '') {
+            setFile({ url: url })
+            form.setFieldValue('url', file.url)
+        } else {
+            return
+        }
+
     }, [url])
 
 
@@ -70,69 +75,87 @@ export const ImageItem = (props) => {
             span: 20,
         },
     };
-
+    const uploadImages = (currentFile) => {
+        console.log('79', currentFile)
+    }
+    console.log('url', (file.url))
     return (
+
         <div style={{ display: 'flex' }}>
-            <div style={{ display: 'flex', flexFlow: 'column', justifyContent: 'space-around' }}>
-                {
-                    showAddBtn && <Button type='primary' icon={<IconPlus />} onClick={addOne} />}
-                {
-                    //    delete need to use call back with parameters
-                    showDelBtn && <Button type='primary' status='danger' icon={<IconDelete />} onClick={() => { deleteOne(index) }} />
-                }
 
-            </div>
+            {/* //    delete need to use call back with parameters */}
+            {showOperation &&
+                <div style={{ display: 'flex', flexFlow: 'column', justifyContent: 'space-around' }}>
+
+                    {
+                        showAddBtn && <Button type='primary' icon={<IconPlus />} onClick={addOne} />
+                    }
+                    {
+                        showDelBtn && <Button type='primary' status='danger' icon={<IconDelete />} onClick={() => { deleteOne(index) }} />
+                    }
+
+                </div>
+            }
+
             <div style={{ display: 'flex', flexFlow: 'column', justifyContent: 'center', marginLeft: 20 }}>
-                <Upload
-                    action='/'
-                    fileList={file ? [file] : []}
-                    showUploadList={false}
-                    onChange={(_, currentFile) => {
-                        setFile({
-                            ...currentFile,
-                            url: URL.createObjectURL(currentFile.originFile),
-                        })
-                    }}
-                    onProgress={(currentFile: any) => {
-                        setFile(currentFile)
-                    }}
-                >
-                    <div className={cs} style={{ paddingRight: 0 }}>
-                        {file && file.url ? (
-                            <div className='arco-upload-list-item-picture custom-upload-avatar'>
-                                <img src={file.url} />
-                                <div className='arco-upload-list-item-picture-mask'>
-                                    <IconEdit />
-                                </div>
-                                {file.status === 'uploading' && file.percent < 100 && <Progress
-                                    percent={file.percent}
-                                    type='circle'
-                                    size='mini'
-                                    style={{
-                                        position: 'absolute',
-                                        left: '50%',
-                                        top: '50%',
-                                        transform: 'translateX(-50%) translateY(-50%)'
-                                    }}
-                                />
-                                }
-                            </div>
-                        ) : (
-                            <div className='arco-upload-trigger-picture'>
-                                <div className='arco-upload-trigger-picture-text'>
-                                    <IconPlus />
-                                    <div style={{ marginTop: 10, fontWeight: 600 }}>Upload</div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </Upload>
+                {
+                    showUpload &&
+                    <> <Upload
+                        action='/'
+                        fileList={file ? [file] : []}
+                        showUploadList={false}
+                        onChange={(_, currentFile) => {
+                            uploadImages(currentFile);
+                            setFile({
+                                ...currentFile,
+                                url: URL.createObjectURL(currentFile.originFile),
+                            })
+                        }}
+                        onProgress={(currentFile: any) => {
+                            setFile(currentFile)
+                        }}
+                        accept=".png, .jpg, .jpeg, .gif"
+                    >
+                        <div className={cs} style={{ paddingRight: 0 }}>
+                            {
+                                file && (file.url) ? (
+                                    <div className='arco-upload-list-item-picture custom-upload-avatar'>
+                                        <img src={file.url} />
+                                        <div className='arco-upload-list-item-picture-mask'>
+                                            <IconEdit />
+                                        </div>
+                                        {file.status === 'uploading' && file.percent < 100 && <Progress
+                                            percent={file.percent}
+                                            type='circle'
+                                            size='mini'
+                                            style={{
+                                                position: 'absolute',
+                                                left: '50%',
+                                                top: '50%',
+                                                transform: 'translateX(-50%) translateY(-50%)'
+                                            }}
+                                        />
+                                        }
+                                    </div>
+                                ) : (
+                                    <div className='arco-upload-trigger-picture'>
+                                        <div className='arco-upload-trigger-picture-text'>
+                                            <IconPlus />
+                                            <div style={{ marginTop: 10, fontWeight: 600 }}>Upload</div>
+                                        </div>
+                                    </div>
+                                )}
+                        </div>
+                    </Upload>
+                        <Button size='small' onClick={() => setVisible(true)} type='primary'>
+                            Input image link
+                        </Button>
 
+
+                    </>
+                }
                 {/* //button+modal */}
 
-                <Button size='small' onClick={() => setVisible(true)} type='primary'>
-                    Input image link
-                </Button>
                 <Modal
                     title='Input Image Link'
                     visible={visible}
@@ -155,8 +178,8 @@ export const ImageItem = (props) => {
 
             </div>
             <div style={{ display: 'flex', flexFlow: 'column', justifyContent: 'space-around', marginLeft: 20, }}>
-                <Input onChange={changeLink} value={link} style={{ width: 350 }} addBefore='Link' placeholder='Please enter' />
-                <Input onChange={changeIcon} value={icon} style={{ width: 350 }} addBefore='Icon' placeholder='Please enter' />
+                {showLink && <Input onChange={changeLink} value={link} style={{ width: 350 }} addBefore='Link' placeholder='Please enter' />}
+                {showIcon && <Input onChange={changeIcon} value={icon} style={{ width: 350 }} addBefore='Icon' placeholder='Please enter' />}
             </div>
 
         </div>

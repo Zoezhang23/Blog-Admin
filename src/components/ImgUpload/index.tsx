@@ -20,10 +20,10 @@ export const ImgUpload = (props) => {
         {
             _id: '',
             link: '',
-            url: 'https://www.planetware.com/photos-large/F/france-things-to-do-eiffel-tower-sunset.jpg',
+            url: '',
             icon: '',
-            showAddBtn: false,
-            showDelBtn: true,
+            showAddBtn: true,
+            showDelBtn: false,
 
         }
     ]
@@ -33,14 +33,17 @@ export const ImgUpload = (props) => {
     //decide true or false of child btn
     useEffect(() => {
         if (!value) return;
-        if (imgs.length < maxImgs) {
-            imgs.map((item, index) => {
+
+        imgs.map((item, index) => {
+            if (imgs.length < maxImgs) {
                 item.showDelBtn = imgs.length !== 1;
                 item.showAddBtn = index === imgs.length - 1;
-            })
-        }
-        setImgs(value);
-        onChange(imgs);
+            } else {
+                item.showDelBtn = true;
+                item.showAddBtn = false;
+            }
+        })
+        setImgs(imgs);
     }, [value])
     // here to deal with the onChange function
     const onItemChange = (data) => {
@@ -53,10 +56,10 @@ export const ImgUpload = (props) => {
             imgs.push({
                 _id: '',
                 link: '',
-                url: 'https://www.planetware.com/photos-large/F/france-things-to-do-eiffel-tower-sunset.jpg',
+                url: '',
                 icon: '',
-                showAddBtn: false,
-                showDelBtn: true,
+                showAddBtn: true,
+                showDelBtn: false,
             })
             onChange(imgs);
         } else {
@@ -76,7 +79,7 @@ export const ImgUpload = (props) => {
     return (
         imgs.map((item, index) => {
             return <ImageItem key={index} {...item
-            } index={index} onChange={onItemChange} addOne={addOne} deleteOne={deleteOne}></ImageItem>
+            } index={index} onChange={onItemChange} addOne={addOne} deleteOne={deleteOne} showUpload showLink showIcon showOperation></ImageItem>
         })
     )
 }

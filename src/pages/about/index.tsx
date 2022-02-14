@@ -21,19 +21,15 @@ export default function aboutPage() {
                     {
                         _id: '',
                         link: '',
-                        url: 'https://www.planetware.com/photos-large/F/france-things-to-do-eiffel-tower-sunset.jpg',
+                        url: ' ',
                         icon: '',
                         showAddBtn: true,
                         showDelBtn: false,
                     }
                 ],
-
-
             })
         }, 1000)
-
     }, [])
-
 
 
     const sumbit = async () => {
@@ -45,7 +41,7 @@ export default function aboutPage() {
         //todo....
     }
     const onChange = (data) => {
-
+        console.log('onChange', data)
     }
     return (
         <div className={styles.container}>
